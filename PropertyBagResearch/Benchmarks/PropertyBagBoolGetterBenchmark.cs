@@ -1,19 +1,26 @@
 ﻿namespace PropertyBagResearch.Benchmarks
 {
-    using BenchmarkDotNet.Attributes;
     using System;
-    using System.Collections.Generic;
-    using System.Text;
+    using BenchmarkDotNet.Attributes;
 
     public class PropertyBagBoolGetterBenchmark : BenchmarkBase
     {
-        private TestType _nonTyped = new TestType(new NonTypedPropertyBag(new DictionaryFactory()));
-        private TestType _typed = new TestType(new TypedPropertyBag(new DictionaryFactory()));
-        private TestType _superTyped = new TestType(new SuperTypedPropertyBag(new DictionaryFactory()));
+        private TestType _nonTyped;
+        private TestType _superTyped;
+        private TestType _typed;
+
+        [Params(typeof(DictionaryFactory), typeof(SortedDictionaryFactory))]
+        public Type DictionaryFactoryType { get; set; }
 
         [GlobalSetup]
         public void Setup()
         {
+            var dictionaryFactory = Activator.CreateInstance(DictionaryFactoryType) as IDictionaryFactory;
+
+            _nonTyped = new TestType(new NonTypedPropertyBag(dictionaryFactory));
+            _typed = new TestType(new TypedPropertyBag(dictionaryFactory));
+            _superTyped = new TestType(new SuperTypedPropertyBag(dictionaryFactory));
+
             _nonTyped.IntValue = 42;
             _nonTyped.BoolValue = true;
 

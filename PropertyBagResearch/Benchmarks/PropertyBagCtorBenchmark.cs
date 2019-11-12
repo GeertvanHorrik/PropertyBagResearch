@@ -1,30 +1,40 @@
 ﻿namespace PropertyBagResearch.Benchmarks
 {
-    using BenchmarkDotNet.Attributes;
     using System;
-    using System.Collections.Generic;
-    using System.Text;
+    using BenchmarkDotNet.Attributes;
 
     public class PropertyBagCtorBenchmark : BenchmarkBase
     {
+        private IDictionaryFactory _dictionaryFactory;
+
+        [Params(typeof(DictionaryFactory), typeof(SortedDictionaryFactory))]
+        public Type DictionaryFactoryType { get; set; }
+
+        [GlobalSetup]
+        public void Setup()
+        {
+            _dictionaryFactory = Activator.CreateInstance(DictionaryFactoryType) as IDictionaryFactory;
+        }
+
+
         [Benchmark]
         public TestType Ctor_NonTyped()
         {
-            var type = new TestType(new NonTypedPropertyBag(new DictionaryFactory()));
+            var type = new TestType(new NonTypedPropertyBag(_dictionaryFactory));
             return type;
         }
 
         [Benchmark]
         public TestType Ctor_Typed()
         {
-            var type = new TestType(new TypedPropertyBag(new DictionaryFactory()));
+            var type = new TestType(new TypedPropertyBag(_dictionaryFactory));
             return type;
         }
 
         [Benchmark]
         public TestType Ctor_SuperTyped()
         {
-            var type = new TestType(new SuperTypedPropertyBag(new DictionaryFactory()));
+            var type = new TestType(new SuperTypedPropertyBag(_dictionaryFactory));
             return type;
         }
     }
