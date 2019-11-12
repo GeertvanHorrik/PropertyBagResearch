@@ -1,15 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace PropertyBagResearch
+﻿namespace PropertyBagResearch
 {
+    using System;
+    using System.Collections.Generic;
+
     public class SuperTypedPropertyBag : IPropertyBag
     {
-        private readonly Dictionary<string, int> _intValues = new Dictionary<string, int>();
-        private readonly Dictionary<string, bool> _boolValues = new Dictionary<string, bool>();
-        private readonly Dictionary<string, short> _shortValues = new Dictionary<string, short>();
-        private readonly Dictionary<string, long> _longValues = new Dictionary<string, long>();
-        private readonly Dictionary<string, object> _referenceValues = new Dictionary<string, object>();
+        private readonly IDictionary<string, int> _intValues;
+        private readonly IDictionary<string, bool> _boolValues;
+        private readonly IDictionary<string, short> _shortValues;
+        private readonly IDictionary<string, long> _longValues;
+        private readonly IDictionary<string, object> _referenceValues;
+
+        public SuperTypedPropertyBag(IDictionaryFactory dictionaryFactory)
+        {
+            _intValues = dictionaryFactory.GenerateDictionary<int>();
+            _boolValues = dictionaryFactory.GenerateDictionary<bool>();
+            _shortValues = dictionaryFactory.GenerateDictionary<short>();
+            _longValues = dictionaryFactory.GenerateDictionary<long>();
+            _referenceValues = dictionaryFactory.GenerateDictionary<object>();
+        }
 
         public void SetValue<TValue>(string name, TValue value)
         {

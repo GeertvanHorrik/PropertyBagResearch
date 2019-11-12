@@ -1,10 +1,15 @@
-﻿using System.Collections.Generic;
-
-namespace PropertyBagResearch
+﻿namespace PropertyBagResearch
 {
+    using System.Collections.Generic;
+
     public class NonTypedPropertyBag : IPropertyBag
     {
-        private readonly Dictionary<string, object> _values = new Dictionary<string, object>();
+        private readonly IDictionary<string, object> _values;
+
+        public NonTypedPropertyBag(IDictionaryFactory dictionaryFactory)
+        {
+            _values = dictionaryFactory.GenerateDictionary<object>();
+        }
 
         public void SetValue<TValue>(string name, TValue value)
         {
