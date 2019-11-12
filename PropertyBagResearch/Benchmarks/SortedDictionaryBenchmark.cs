@@ -8,7 +8,7 @@
     public class SortedDictionaryBenchmark : BenchmarkBase
     {
         private TestType _regularDictionary = new TestType(new NonTypedPropertyBag(new DictionaryFactory()));
-        private TestType _sortedDictionary = new TestType(new NonTypedPropertyBag(new DictionaryFactory()));
+        private TestType _sortedDictionary = new TestType(new NonTypedPropertyBag(new SortedDictionaryFactory()));
 
         public SortedDictionaryBenchmark()
         {
