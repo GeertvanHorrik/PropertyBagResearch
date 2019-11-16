@@ -5,55 +5,66 @@
 
     public class SortedDictionaryBenchmark : BenchmarkBase
     {
+        private TestType _regularDictionary = new TestType(new NonTypedPropertyBag(new DictionaryFactory()));
+        private TestType _sortedDictionary = new TestType(new NonTypedPropertyBag(new SortedDictionaryFactory()));
         private TestType testObject;
 
-        [Params(typeof(DictionaryFactory), typeof(SortedDictionaryFactory), typeof(SortedListDictionaryFactory))]
-        public Type DictionaryFactoryType { get; set; }
-
-        [Params(typeof(NonTypedPropertyBag), typeof(TypedPropertyBag), typeof(SuperTypedPropertyBag))]
-        public Type PropertyBagType { get; set; }
-
-        [GlobalSetup]
-        public void Setup()
+        public SortedDictionaryBenchmark()
         {
-            var dictionaryFactory = Activator.CreateInstance(DictionaryFactoryType) as IDictionaryFactory;
-            var constructorInfo = PropertyBagType.GetConstructor(new[] {typeof(IDictionaryFactory)});
-            var propertryBag = (IPropertyBag) constructorInfo.Invoke(new object[] {dictionaryFactory});
-            testObject = new TestType(propertryBag)
-            {
-                BoolValue = true, 
-                // ShortValue = 42,
-                IntValue = 42, 
-                // LongValue = 42l,
-                IntProperty00 = 1,
-                IntProperty01 = 1,
-                IntProperty02 = 1,
-                IntProperty03 = 1,
-                IntProperty04 = 1,
-                IntProperty05 = 1,
-                IntProperty06 = 1,
-                IntProperty07 = 1,
-                IntProperty08 = 1,
-                IntProperty09 = 1
-            };
+            InitializeDefaultValues(_regularDictionary);
+            InitializeDefaultValues(_sortedDictionary);
+        }
+
+        private void InitializeDefaultValues(TestType testType)
+        {
+            // Important: int must be the first value
+            testType.IntValue = 42;
+            testType.BoolValue = true;
+            testType.ShortValue = 42;
+            testType.LongValue = 42l;
+            testType.IntValue1 = 42;
+            testType.IntValue2 = 42;
+            testType.IntValue3 = 42;
+            testType.IntValue4 = 42;
+            testType.IntValue5 = 42;
+            testType.IntValue6 = 42;
+            testType.IntValue7 = 42;
+            testType.IntValue8 = 42;
+            testType.IntValue9 = 42;
         }
 
         [Benchmark]
-        public int GetIntProperty00()
+        public int SortedDictionary_FirstValue()
         {
-            return testObject.IntProperty00;
+            return GetFirstInt(_sortedDictionary);
         }
 
         [Benchmark]
-        public int GetIntProperty09()
+        public int SortedDictionary_LastValue()
         {
-            return testObject.IntProperty09;
+            return GetLastInt(_sortedDictionary);
         }
 
         [Benchmark]
-        public int GetIntProperty05()
+        public int RegularDictionary_FirstValue()
         {
-            return testObject.IntProperty05;
+            return GetFirstInt(_regularDictionary);
+        }
+
+        [Benchmark]
+        public int RegularDictionary_LastValue()
+        {
+            return GetLastInt(_regularDictionary);
+        }
+
+        public int GetFirstInt(TestType testType)
+        {
+            return testType.IntValue;
+        }
+
+        public int GetLastInt(TestType testType)
+        {
+            return testType.IntValue9;
         }
     }
 }

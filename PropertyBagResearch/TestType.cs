@@ -94,5 +94,59 @@
             get { return _propertyBag.GetValue<int>(nameof(IntProperty09)); }
             set { _propertyBag.SetValue(nameof(IntProperty09), value); }
         }
+
+        public int IntValue1
+        {
+            get { return _propertyBag.GetValue<int>("int1"); }
+            set { _propertyBag.SetValue("int1", value); }
+        }
+
+        public int IntValue2
+        {
+            get { return _propertyBag.GetValue<int>("int2"); }
+            set { _propertyBag.SetValue("int2", value); }
+        }
+
+        public int IntValue3
+        {
+            get { return _propertyBag.GetValue<int>("int3"); }
+            set { _propertyBag.SetValue("int3", value); }
+        }
+
+        public int IntValue4
+        {
+            get { return _propertyBag.GetValue<int>("int4"); }
+            set { _propertyBag.SetValue("int4", value); }
+        }
+
+        public int IntValue5
+        {
+            get { return _propertyBag.GetValue<int>("int5"); }
+            set { _propertyBag.SetValue("int5", value); }
+        }
+
+        public int IntValue6
+        {
+            get { return _propertyBag.GetValue<int>("int6"); }
+            set { _propertyBag.SetValue("int6", value); }
+        }
+
+        public int IntValue7
+        {
+            get { return _propertyBag.GetValue<int>("int7"); }
+            set { _propertyBag.SetValue("int7", value); }
+        }
+
+        public int IntValue8
+        {
+            get { return _propertyBag.GetValue<int>("int8"); }
+            set { _propertyBag.SetValue("int8", value); }
+        }
+
+        public int IntValue9
+        {
+            get { return _propertyBag.GetValue<int>("int9"); }
+            set { _propertyBag.SetValue("int9", value); }
+        }
     }
 }
