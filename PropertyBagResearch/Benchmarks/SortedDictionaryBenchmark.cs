@@ -1,14 +1,13 @@
 ﻿namespace PropertyBagResearch.Benchmarks
 {
-    using BenchmarkDotNet.Attributes;
     using System;
-    using System.Collections.Generic;
-    using System.Text;
+    using BenchmarkDotNet.Attributes;
 
     public class SortedDictionaryBenchmark : BenchmarkBase
     {
         private TestType _regularDictionary = new TestType(new NonTypedPropertyBag(new DictionaryFactory()));
         private TestType _sortedDictionary = new TestType(new NonTypedPropertyBag(new SortedDictionaryFactory()));
+        private TestType testObject;
 
         public SortedDictionaryBenchmark()
         {

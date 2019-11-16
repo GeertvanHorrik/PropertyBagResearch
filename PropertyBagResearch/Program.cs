@@ -1,14 +1,16 @@
 ﻿namespace PropertyBagResearch
 {
-    using BenchmarkDotNet.Running;
-    using PropertyBagResearch.Benchmarks;
     using System;
     using System.Collections.Generic;
     using System.Linq;
 
+    using BenchmarkDotNet.Running;
+
+    using PropertyBagResearch.Benchmarks;
+
     class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             Action separatorAction = () => Console.ReadKey();
             //Action separatorAction = null;
@@ -21,6 +23,7 @@
         {
             var benchmarkTypes = new List<Type>();
             benchmarkTypes.Add(typeof(SortedDictionaryBenchmark));
+            benchmarkTypes.Add(typeof(SortedDictionaryBenchmark2));
             benchmarkTypes.Add(typeof(PropertyBagBoolGetterBenchmark));
             benchmarkTypes.Add(typeof(PropertyBagIntGetterBenchmark));
             benchmarkTypes.Add(typeof(PropertyBagCtorBenchmark));
