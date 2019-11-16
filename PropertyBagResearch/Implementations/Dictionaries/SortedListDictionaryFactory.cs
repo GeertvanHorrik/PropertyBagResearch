@@ -4,16 +4,18 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-using PropertyBagResearch.Collections;
-
 namespace PropertyBagResearch
 {
+    using System.Collections.Generic;
+
+    using PropertyBagResearch.Collections;
+
     public class SortedListDictionaryFactory : IDictionaryFactory
     {
         public IDictionary<string, TValue> GenerateDictionary<TValue>()
         {
-            return new SortedListDictionary<string, TValue>();;
+            return new SortedListDictionary<string, TValue>();
+            
         }
     }
 }

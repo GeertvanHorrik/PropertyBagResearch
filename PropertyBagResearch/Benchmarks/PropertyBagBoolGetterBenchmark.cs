@@ -9,7 +9,7 @@
         private TestType _superTyped;
         private TestType _typed;
 
-        [Params(typeof(DictionaryFactory), typeof(SortedDictionaryFactory))]
+        [Params(typeof(DictionaryFactory), typeof(SortedDictionaryFactory), typeof(SortedListDictionaryFactory))]
         public Type DictionaryFactoryType { get; set; }
 
         [GlobalSetup]
