@@ -21,6 +21,7 @@
         {
             var benchmarkTypes = new List<Type>();
             benchmarkTypes.Add(typeof(SortedDictionaryBenchmark));
+            benchmarkTypes.Add(typeof(SortedDictionaryBenchmark2));
             benchmarkTypes.Add(typeof(PropertyBagBoolGetterBenchmark));
             benchmarkTypes.Add(typeof(PropertyBagIntGetterBenchmark));
             benchmarkTypes.Add(typeof(PropertyBagCtorBenchmark));
