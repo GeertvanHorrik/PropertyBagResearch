@@ -1,43 +1,59 @@
 ﻿namespace PropertyBagResearch.Benchmarks
 {
-    using BenchmarkDotNet.Attributes;
     using System;
-    using System.Collections.Generic;
-    using System.Text;
+    using BenchmarkDotNet.Attributes;
 
     public class SortedDictionaryBenchmark : BenchmarkBase
     {
-        private TestType _regularDictionary = new TestType(new NonTypedPropertyBag(new DictionaryFactory()));
-        private TestType _sortedDictionary = new TestType(new NonTypedPropertyBag(new DictionaryFactory()));
+        private TestType testObject;
 
-        public SortedDictionaryBenchmark()
+        [Params(typeof(DictionaryFactory), typeof(SortedDictionaryFactory), typeof(SortedListDictionaryFactory))]
+        public Type DictionaryFactoryType { get; set; }
+
+        [Params(typeof(NonTypedPropertyBag), typeof(TypedPropertyBag), typeof(SuperTypedPropertyBag))]
+        public Type PropertyBagType { get; set; }
+
+        [GlobalSetup]
+        public void Setup()
         {
-            _regularDictionary.BoolValue = true;
-            _regularDictionary.ShortValue = 42;
-            _regularDictionary.IntValue = 42;
-            _regularDictionary.LongValue = 42l;
-
-            _sortedDictionary.BoolValue = true;
-            _sortedDictionary.ShortValue = 42;
-            _sortedDictionary.IntValue = 42;
-            _sortedDictionary.LongValue = 42l;
+            var dictionaryFactory = Activator.CreateInstance(DictionaryFactoryType) as IDictionaryFactory;
+            var constructorInfo = PropertyBagType.GetConstructor(new[] {typeof(IDictionaryFactory)});
+            var propertryBag = (IPropertyBag) constructorInfo.Invoke(new object[] {dictionaryFactory});
+            testObject = new TestType(propertryBag)
+            {
+                BoolValue = true, 
+                // ShortValue = 42,
+                IntValue = 42, 
+                // LongValue = 42l,
+                IntProperty00 = 1,
+                IntProperty01 = 1,
+                IntProperty02 = 1,
+                IntProperty03 = 1,
+                IntProperty04 = 1,
+                IntProperty05 = 1,
+                IntProperty06 = 1,
+                IntProperty07 = 1,
+                IntProperty08 = 1,
+                IntProperty09 = 1
+            };
         }
 
         [Benchmark]
-        public int SortedDictionary()
+        public int GetIntProperty00()
         {
-            return GetInt(_sortedDictionary);
+            return testObject.IntProperty00;
         }
 
         [Benchmark]
-        public int RegularDictionary()
+        public int GetIntProperty09()
         {
-            return GetInt(_regularDictionary);
+            return testObject.IntProperty09;
         }
 
-        public int GetInt(TestType testType)
+        [Benchmark]
+        public int GetIntProperty05()
         {
-            return testType.IntValue;
+            return testObject.IntProperty05;
         }
     }
 }

@@ -4,6 +4,6 @@
 
     public interface IDictionaryFactory
     {
-        public IDictionary<string, TValue> GenerateDictionary<TValue>();
+        IDictionary<string, TValue> GenerateDictionary<TValue>();
     }
 }
