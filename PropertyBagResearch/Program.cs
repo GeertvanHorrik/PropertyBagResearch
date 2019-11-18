@@ -22,6 +22,7 @@
         static void RunAllSorted(Action separatorAction)
         {
             var benchmarkTypes = new List<Type>();
+            benchmarkTypes.Add(typeof(PropertyBagPropertyChangedBenchmark));
             benchmarkTypes.Add(typeof(PropertyBagAllocBenchmark));
             benchmarkTypes.Add(typeof(SortedDictionaryBenchmark));
             benchmarkTypes.Add(typeof(SortedDictionaryBenchmark2));
