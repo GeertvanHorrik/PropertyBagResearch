@@ -40,7 +40,11 @@
                 return;
             }
 
-            throw new NotSupportedException();
+            {
+                var tr = __makeref(value);
+                var bagValue = __refvalue(tr, object);
+                _referenceValues[name] = bagValue;
+            }
         }
 
         public TValue GetValue<TValue>(string name)
@@ -69,7 +73,16 @@
                 return default;
             }
 
-            throw new NotSupportedException();
+            {
+                if (_referenceValues.TryGetValue(name, out var bagValue))
+                {
+                    var tr = __makeref(bagValue);
+                    var value = __refvalue(tr, TValue);
+                    return value;
+                }
+
+                return default;
+            }
         }
     }
 }
