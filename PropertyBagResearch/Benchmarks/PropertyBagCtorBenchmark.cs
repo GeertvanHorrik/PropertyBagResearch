@@ -2,6 +2,7 @@
 {
     using System;
     using BenchmarkDotNet.Attributes;
+    using Catel.Data;
 
     public class PropertyBagCtorBenchmark : BenchmarkBase
     {
@@ -20,7 +21,7 @@
         [Benchmark]
         public TestType Ctor_NonTyped()
         {
-            var type = new TestType(new NonTypedPropertyBag(_dictionaryFactory));
+            var type = new TestType(new PropertyBag(_dictionaryFactory));
             return type;
         }
 
@@ -28,13 +29,6 @@
         public TestType Ctor_Typed()
         {
             var type = new TestType(new TypedPropertyBag(_dictionaryFactory));
-            return type;
-        }
-
-        [Benchmark]
-        public TestType Ctor_SuperTyped()
-        {
-            var type = new TestType(new SuperTypedPropertyBag(_dictionaryFactory));
             return type;
         }
     }

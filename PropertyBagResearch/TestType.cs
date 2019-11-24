@@ -1,4 +1,6 @@
-﻿namespace PropertyBagResearch
+﻿using Catel.Data;
+
+namespace PropertyBagResearch
 {
     public class TestType
     {

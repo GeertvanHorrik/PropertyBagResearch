@@ -9,6 +9,7 @@ namespace PropertyBagResearch.Benchmarks
     using System;
 
     using BenchmarkDotNet.Attributes;
+    using Catel.Data;
 
     /// <summary>
     ///     The property bag alloc benchmark.
@@ -22,7 +23,7 @@ namespace PropertyBagResearch.Benchmarks
         [Params(typeof(DictionaryFactory))]
         public Type DictionaryFactoryType { get; set; }
 
-        [Params(typeof(NonTypedPropertyBag), typeof(SuperTypedPropertyBag), typeof(TypedPropertyBag))]
+        [Params(typeof(PropertyBag), typeof(TypedPropertyBag))]
         public Type ProperyBagType { get; set; }
 
         [Benchmark]

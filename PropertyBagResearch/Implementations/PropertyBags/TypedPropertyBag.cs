@@ -1,110 +1,67 @@
-﻿namespace PropertyBagResearch
+﻿namespace Catel.Data
 {
+    using PropertyBagResearch;
     using System;
     using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    //using Catel.Logging;
+    //using Catel.Reflection;
 
-    public class TypedPropertyBag : IPropertyBag
+    /// <summary>
+    /// Memory efficient typed property bag that takes care of boxing.
+    /// </summary>
+    public partial class TypedPropertyBag : PropertyBagBase
     {
-        private readonly IDictionary<string, int> _intValues;
-        private readonly IDictionary<string, bool> _boolValues;
-        private readonly IDictionary<string, short> _shortValues;
-        private readonly IDictionary<string, long> _longValues;
-        private readonly IDictionary<string, object> _referenceValues;
+        //private static readonly ILog Log = LogManager.GetCurrentClassLogger();
 
-        private static readonly Dictionary<Type, object> _setters = new Dictionary<Type, object>();
-        private static readonly Dictionary<Type, object> _getters = new Dictionary<Type, object>();
+        private readonly Dictionary<string, Type> _propertyTypes = new Dictionary<string, Type>();
 
-        static TypedPropertyBag()
+        public TypedPropertyBag()
         {
-            _setters[typeof(int)] = (Action<TypedPropertyBag, string, int>)SetIntValue;
-            _setters[typeof(bool)] = (Action<TypedPropertyBag, string, bool>)SetBoolValue;
-            _setters[typeof(short)] = (Action<TypedPropertyBag, string, short>)SetShortValue;
-            _setters[typeof(long)] = (Action<TypedPropertyBag, string, long>)SetLongValue;
 
-            _getters[typeof(int)] = (Func<TypedPropertyBag, string, int>)GetIntValue;
-            _getters[typeof(bool)] = (Func<TypedPropertyBag, string, bool>)GetBoolValue;
-            _getters[typeof(short)] = (Func<TypedPropertyBag, string, short>)GetShortValue;
-            _getters[typeof(long)] = (Func<TypedPropertyBag, string, long>)GetLongValue;
         }
 
-        public TypedPropertyBag(IDictionaryFactory dictionaryFactory)
+        public TypedPropertyBag(IDictionaryFactory dummyDictionary)
         {
-            _intValues = dictionaryFactory.GenerateDictionary<int>();
-            _boolValues = dictionaryFactory.GenerateDictionary<bool>();
-            _shortValues = dictionaryFactory.GenerateDictionary<short>();
-            _longValues = dictionaryFactory.GenerateDictionary<long>();
-            _referenceValues = dictionaryFactory.GenerateDictionary<object>();
+            // Dummy ctor for benchmarks
         }
 
-        public void SetValue<TValue>(string name, TValue value)
+        public override string[] GetAllNames()
         {
-            var targetValue = typeof(TValue);
-
-            if (_setters.TryGetValue(targetValue, out var setterObj))
+            lock (_propertyTypes)
             {
-                var setter = (Action<TypedPropertyBag, string, TValue>)setterObj;
-                if (!(setter is null))
+                return _propertyTypes.Keys.ToArray();
+            }
+        }
+
+        public override bool IsAvailable(string name)
+        {
+            //Argument.IsNotNullOrWhitespace(nameof(name), name);
+
+            lock (_propertyTypes)
+            {
+                return _propertyTypes.ContainsKey(name);
+            }
+        }
+
+        private void EnsureIntegrity(string name, Type type)
+        {
+            lock (_propertyTypes)
+            {
+                if (_propertyTypes.TryGetValue(name, out var existingType))
                 {
-                    setter(this, name, value);
-                    return;
+                    if (existingType != type && !existingType.IsAssignableFrom(type))
+                    {
+                        throw new InvalidOperationException($"Property '{name}' is already registered as '{existingType.FullName}' which is not compatible with '{type.FullName}'");
+                    }
+                }
+                else
+                {
+                    _propertyTypes[name] = type;
                 }
             }
-
-            // Old-fashioned, potentially boxing, method
-            _referenceValues[name] = value;
-        }
-
-        private static void SetIntValue(TypedPropertyBag instance, string name, int value)
-        {
-            instance._intValues[name] = value;
-        }
-
-        private static void SetBoolValue(TypedPropertyBag instance, string name, bool value)
-        {
-            instance._boolValues[name] = value;
-        }
-
-        private static void SetShortValue(TypedPropertyBag instance, string name, short value)
-        {
-            instance._shortValues[name] = value;
-        }
-
-        private static void SetLongValue(TypedPropertyBag instance, string name, long value)
-        {
-            instance._longValues[name] = value;
-        }
-
-        public TValue GetValue<TValue>(string name)
-        {
-            var targetValue = typeof(TValue);
-
-            if (_getters.TryGetValue(targetValue, out var retrievalFuncObj))
-            {
-                var retrievalFunc = (Func<TypedPropertyBag, string, TValue>)retrievalFuncObj;
-                return retrievalFunc(this, name);
-            }
-
-            throw new NotSupportedException();
-        }
-
-        private static int GetIntValue(TypedPropertyBag instance, string name)
-        {
-            return instance._intValues[name];
-        }
-
-        private static bool GetBoolValue(TypedPropertyBag instance, string name)
-        {
-            return instance._boolValues[name];
-        }
-
-        private static short GetShortValue(TypedPropertyBag instance, string name)
-        {
-            return instance._shortValues[name];
-        }
-
-        private static long GetLongValue(TypedPropertyBag instance, string name)
-        {
-            return instance._longValues[name];
         }
     }
 }

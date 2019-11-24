@@ -1,8 +1,9 @@
-﻿using System;
-using BenchmarkDotNet.Attributes;
-
-namespace PropertyBagResearch.Benchmarks
+﻿namespace PropertyBagResearch.Benchmarks
 {
+    using System;
+    using BenchmarkDotNet.Attributes;
+    using Catel.Data;
+
     public class SortedDictionaryBenchmark2 : BenchmarkBase
     {
         private TestType testObject;
@@ -10,7 +11,7 @@ namespace PropertyBagResearch.Benchmarks
         [Params(typeof(DictionaryFactory), typeof(SortedDictionaryFactory), typeof(SortedListDictionaryFactory))]
         public Type DictionaryFactoryType { get; set; }
 
-        [Params(typeof(NonTypedPropertyBag), typeof(TypedPropertyBag), typeof(SuperTypedPropertyBag))]
+        [Params(typeof(PropertyBag), typeof(TypedPropertyBag))]
         public Type PropertyBagType { get; set; }
 
         [GlobalSetup]

@@ -2,6 +2,7 @@
 {
     using System;
     using BenchmarkDotNet.Attributes;
+    using Catel.Data;
 
     public class PropertyBagIntGetterBenchmark : BenchmarkBase
     {
@@ -17,9 +18,8 @@
         {
             var dictionaryFactory = Activator.CreateInstance(DictionaryFactoryType) as IDictionaryFactory;
 
-            _nonTyped = new TestType(new NonTypedPropertyBag(dictionaryFactory));
+            _nonTyped = new TestType(new PropertyBag(dictionaryFactory));
             _typed = new TestType(new TypedPropertyBag(dictionaryFactory));
-            _superTyped = new TestType(new SuperTypedPropertyBag(dictionaryFactory));
 
             _nonTyped.IntValue = 42;
             _nonTyped.BoolValue = true;

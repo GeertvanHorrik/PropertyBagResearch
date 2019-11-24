@@ -2,11 +2,12 @@
 {
     using System;
     using BenchmarkDotNet.Attributes;
+    using Catel.Data;
 
     public class SortedDictionaryBenchmark : BenchmarkBase
     {
-        private TestType _regularDictionary = new TestType(new NonTypedPropertyBag(new DictionaryFactory()));
-        private TestType _sortedDictionary = new TestType(new NonTypedPropertyBag(new SortedDictionaryFactory()));
+        private TestType _regularDictionary = new TestType(new PropertyBag(new DictionaryFactory()));
+        private TestType _sortedDictionary = new TestType(new PropertyBag(new SortedDictionaryFactory()));
         private TestType testObject;
 
         public SortedDictionaryBenchmark()
